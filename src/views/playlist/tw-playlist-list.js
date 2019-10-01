@@ -124,13 +124,15 @@ class TwPlayList extends React.Component {
                                     <Card 
                                         onClick={() => this.handleModal(element.contentDetails.videoId)} 
                                         key={ i } 
+                                        title={ element.snippet.title }
                                         url={element.snippet.thumbnails.standard.url}
                                     />
                                 )                    
                             })}
-                            <div align="center">
+                            <div style={ { clear:"both" } } />
+                             <div align="center">
                                 <button onClick={ ()=> this.handleNextPage() } style={ style.styleButtonLoadMore }>SHOW MORE</button>
-                            </div>                    
+                            </div>
                         </div>                
                     </div>
                 </Page>    

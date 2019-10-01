@@ -15,3 +15,26 @@ Execute este comando para realizar a instalação das dependências
 ### `npm start`
 
 Execute este comando para rodar a aplicação
+
+### `Usuários para acesso`
+
+"sw_data_base": [
+      {
+        "id": 1,
+        "name":"Edison Arantes do Nascimento",
+        "email": "edson@futebol.com",
+        "password": "121212"
+      },
+      {
+        "id": 2,
+        "name":"Airton Senna",
+        "email": "airton@f1.com",
+        "password": "101010"
+      },
+      {
+        "id": 3,
+        "name":"Ronaldo Fenômeno",
+        "email": "ronaldo@fenomeno.com",
+        "password": "757575"
+      }
+]
