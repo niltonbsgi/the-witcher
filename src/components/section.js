@@ -1,19 +1,18 @@
-import React from  'react';
+import React from 'react';
 import { isAuthenticated } from '../utils/utils';
 
-const Section = ({ children, history }) => {    
-    return(
+const Section = ({ children, history }) => {
+    return (
         <section>
-            { isAuthenticated() && 
-                children   
+            {isAuthenticated() &&
+                children
             }
-            { !isAuthenticated() &&
-                
-                history.push('/signin/')  
+            {!isAuthenticated() &&
+
+                history.push('/signin/')
             }
-        </section>    
+        </section>
     )
 }
-
 
 export default Section

@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Z_BLOCK } from 'zlib';
 
-const Card = ({ title, url, onClick}) => {
+const Card = ({ title, url, onClick }) => {
     return (
-        <div style={style.styleDiv}>            
-            <img style={style.styleImage} onClick={ onClick } src={url}/>                
-            <div style={ style.stylefigcaption }>
-                <label style={ style.styleDivLabel } >{ title }</label>
-            </div>           
+        <div onClick={() => onClick()} style={{...style.styleDiv, ...{ backgroundImage: `url(${url})` }}}>
+            <div style={style.stylefigcaption}>
+                <label style={style.styleDivLabel} >{title}</label>
+            </div>
         </div>
     )
-} 
+}
+
 Card.propTypes = {
     url: PropTypes.string,
     onClick: PropTypes.func
@@ -18,38 +19,42 @@ Card.propTypes = {
 
 Card.defaultProps = {
     url: '',
-    onClick: ()=> {}
-  };
+    onClick: () => { }
+};
 
-const style = { 
-    styleDiv:{
-        float:'left',
-        width: '40%',
-        overflow:'hidden',
-        marginRight:'10px',
-        marginLeft:'30px',
-        marginBottom:'30px',
-        border:'solid 1px',
+const style = {
+    styleDiv: {
+        width: 'calc(50% - 17px)',
+        height: '232px',
+        overflow: 'hidden',
+        marginBottom: '35px',
+        border: 'solid 1px',
         borderColor: '#f5e59a',
-        position:'relative',
-    },
-    styleDivLabel:{        
-        color:'white', 
-        textAlign:'center', 
-        width:'100%'            
-    },
-    stylefigcaption:{        
-        color:'white', 
-        textAlign:'center', 
-        width:'100%',
-        position:'absolute',
-        bottom:'3px'
-    },
-    styleImage:{
+        position: 'relative',
+        backgroundSize: '190%',
+        backgroundPosition: 'center center',
         cursor: 'pointer',
-        width: '100%', 
-        float:'left'
+    },
+    styleDivLabel: {
+        color: 'white',
+        textAlign: 'center',
+        fontSize: '14px',
+        fontWeight: '200',
+        textAlign: 'center',
+        padding: '10px',
+        display: 'block',
+    },
+    stylefigcaption: {
+        width: '100%',
+        position: 'absolute',
+        bottom: '0',
+        backgroundColor: 'rgba(0,0,0,.6)',
+    },
+    styleImage: {
+        cursor: 'pointer',
+        width: '100%',
+        float: 'left'
     }
-}  
+}
 
 export default Card;

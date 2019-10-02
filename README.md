@@ -5,7 +5,7 @@
 1 - Obtenha uma conta google (vide manual: https://developers.google.com/youtube/v3/getting-started )
 2 - Efetue as configurações necessárias para acessar os recursos do Youtube Data API     
     2.1 - Obtenha a "api key"(vide configuração mencioanda acima)
-3 - No App, localize o arquivo "list_requests.js"
+3 - No App, localize o arquivo "services/constants.js"
 4 - Na variável "youtube_api_key", informe o valor da "api key" (vide configuração mencioanda acima) 
 
 ### `npm install`

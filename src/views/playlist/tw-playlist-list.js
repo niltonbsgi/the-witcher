@@ -1,195 +1,240 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { _List } from  './tw-playlist-action';
+import { _List } from './tw-playlist-action';
 import Card from '../../components/card';
-import logo_dark from  '../../assets/logo_dark.png';
+import logoDark from '../../assets/images/logo-dark.png';
 import Section from '../../components/section';
 import { LogOut } from '../../utils/utils';
 import Page from 'react-page-loading';
-import { playlist_request, playlist_request_next_page } from '../../services/list_requests';
+import Modal from 'react-awesome-modal';
+import YouTube from 'react-youtube';
+import { playlistRequest, playlistRequestNextPage } from '../../services/constants';
+import '../../assets/scss/playlist.scss';
+
+const youtubeOptions = {
+    height: '390',
+    width: '640',
+    playerVars: { autoplay: 1 }
+};
 
 function mapStateToProps(state) {
     const { list, error } = state.PlaylistReducer;
     return { list, error };
-  }
+}
 
-  function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
     return {
-        onGetList: (url_request) => { 
-            const promise = _List( url_request );
+        onGetList: (url_request) => {
+            const promise = _List(url_request);
             dispatch(promise);
             return promise;
         }
     }
-  }
+}
 
 
 class TwPlayList extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props)
 
-        this.state={
+        this.state = {
             playlist: [],
-            nextPageToken:''
+            nextPageToken: '',
+            showModal: false,
         }
 
         this.handleLogOut = this.handleLogOut.bind(this)
         this.handleNextPage = this.handleNextPage.bind(this)
         this.handleModal = this.handleModal.bind(this)
-    }    
+    }
 
-    componentDidMount(){
+    componentDidMount() {
 
         const { onGetList } = this.props
 
-        onGetList(playlist_request)
-            .then(()=>{
+        onGetList(playlistRequest)
+            .then(() => {
                 this.setState({
-                    ...this.state, 
+                    ...this.state,
                     playlist: this.props.list.items,
                     nextPageToken: this.props.list.nextPageToken
-                })})
-            .catch((err)=> {
+                })
+            })
+            .catch((err) => {
                 this.props.history.push('/500/')
             })
-        
+
     }
-    
-    handleLogOut(){
+
+    handleLogOut() {
         const { history } = this.props
         LogOut()
         history.push('/signin/')
     }
 
-    handleModal(videoId){
-        const { history } = this.props
-        history.push(
-            {
-                pathname: `/video_trailler/`,
-                state : { videoId: videoId }                    
-            }
-        );
+    handleModal(videoId) {
+        if (this.state.showModal) {
+            this.setState({
+                ...this.state,
+                showModal: false,
+                showingVideo: null
+            })
+            return;
+        }
+
+        this.setState({
+            ...this.state,
+            showModal: true,
+            showingVideo: videoId
+        })
     }
 
-    handleNextPage(){
-        if(this.state.nextPageToken !=='') {
-            
-            if (this.state.nextPageToken !== undefined){
+    handleNextPage() {
+        if (this.state.nextPageToken !== '') {
+
+            if (this.state.nextPageToken !== undefined) {
                 const { onGetList } = this.props
-                let url_request = playlist_request_next_page.replace('@pageToken',this.state.nextPageToken)
+                let url_request = playlistRequestNextPage.replace('@pageToken', this.state.nextPageToken)
 
                 onGetList(url_request)
-                    .then(()=>{
+                    .then(() => {
                         let { playlist } = this.state
                         this.props.list.items.forEach(element => {
-                            playlist.push(element)    
-                        });                    
+                            playlist.push(element)
+                        });
 
                         this.setState({
-                            ...this.state, 
+                            ...this.state,
                             playlist: playlist,
                             nextPageToken: this.props.list.nextPageToken
-                        })})
-                    .catch((err)=> {
+                        })
+                    })
+                    .catch((err) => {
                         this.props.history.push('/500/')
                     })
-                    
+
             }
         }
     }
 
 
-    render(){
+    render() {
 
         return (
-            <Section history={ this.props.history }>
+            <Section history={this.props.history}>
                 <Page loader={"bar"} color={"#A9A9A9"} size={4}>
-                    <div className="flex-container">
-                        <div className="div_menu">
-                            <div align="center">
-                                <img style={ style.styleImageAlign } src={ logo_dark }/>
-                                <div>
-                                    <button style={ style.styleButtonTrailler }>TRAILLERS</button>
-                                </div>
-                                <div>    
-                                    <button onClick={()=>this.handleLogOut()}  style={ style.styleButtonLogOut }>LOGOUT</button>
-                                </div>    
-                            </div>
-                        </div>
-                        <div className="div_list" style={ style.styleDivList }>
-                            { this.state.playlist.map((element, i) => {
-                                return ( 
-                                    <Card 
-                                        onClick={() => this.handleModal(element.contentDetails.videoId)} 
-                                        key={ i } 
-                                        title={ element.snippet.title }
+
+                    <Modal
+                        visible={this.state.showModal}
+                        width="600"
+                        height="300"
+                        effect="fadeInUp"
+                        onClickAway={() => this.handleModal()}>
+
+                        <YouTube
+                            videoId={this.state.showingVideo}
+                            opts={youtubeOptions}
+                        />
+                    </Modal>
+
+                    <div className="playlist-container">
+                        <nav>
+                            <img style={style.logoNav} src={logoDark} />
+                            <button style={style.styleButtonTrailer}>TRAILERS</button>
+                            <button onClick={() => this.handleLogOut()} style={style.styleButtonLogOut}>LOGOUT</button>
+                        </nav>
+                        <content className="playlist__content" style={style.styleDivList}>
+                            {this.state.playlist.map((element, i) => {
+                                return (
+                                    <Card
+                                        onClick={() => this.handleModal(element.contentDetails.videoId)}
+                                        key={i}
+                                        title={element.snippet.title}
                                         url={element.snippet.thumbnails.standard.url}
                                     />
-                                )                    
+                                )
                             })}
-                            <div style={ { clear:"both" } } />
-                             <div align="center">
-                                <button onClick={ ()=> this.handleNextPage() } style={ style.styleButtonLoadMore }>SHOW MORE</button>
+                            <div style={style.loadMoreButtonContainer}>
+                                <button
+                                    onClick={() => this.handleNextPage()}
+                                    style={style.styleButtonLoadMore}
+                                >
+                                    SHOW MORE
+                                </button>
                             </div>
-                        </div>                
+                        </content>
                     </div>
-                </Page>    
-            </Section>    
-        )   
+                </Page>
+            </Section>
+        )
     }
-} 
+}
 
 const style = {
-    styleDivList: { 
-        maxHeight: window.innerHeight -47 
+    styleDivList: {
+        height: '100vh',
+        display: 'flex',
+        flexFlow: 'row wrap',
+        justifyContent: 'space-between'
     },
-    styleButtonLogOut: { 
-        height: '40px', 
-        width:'60%', 
-        marginTop:'7%',
-        background:'none', 
-        color: 'white', 
-        border:'none' 
+    styleButtonLogOut: {
+        height: '40px',
+        width: '60%',
+        marginTop: '7%',
+        background: 'none',
+        color: 'white',
+        border: 'none'
     },
-    styleButtonTrailler: { 
+    styleButtonTrailer: {
         marginTop: '28%',
-        cursor: 'pointer', 
-        background:'none', 
-        color: '#fffdd0', 
-        border: '0.02px solid #fffdd0', 
-        height: '40px', 
-        width:'60%' 
+        cursor: 'pointer',
+        background: 'none',
+        color: '#fffdd0',
+        border: '0.02px solid #fffdd0',
+        height: '40px',
+        width: '60%'
     },
-    styleButtonLoadMore: { 
-        cursor: 'pointer', 
-        background:'none', 
-        color: '#fffdd0', 
-        border: '0.02px solid #fffdd0', 
-        height: '40px', 
-        width:'20%' 
+    styleButtonLoadMore: {
+        cursor: 'pointer',
+        background: 'none',
+        color: '#fffdd0',
+        border: '0.02px solid #fffdd0',
+        height: '40px',
+        width: '200px'
     },
-    styleImageAlign: { 
-        width: '65%', 
-        marginTop:'19%'         
+    logoNav: {
+        width: '274px',
+        margin: '90px'
     },
-    tagStyle: { 
-        borderBottom:'solid 0.05em', 
-        width:'95%', 
-        fontWeight:'bold', 
-        fontSize:'18px'         
+    tagStyle: {
+        borderBottom: 'solid 0.05em',
+        width: '95%',
+        fontWeight: 'bold',
+        fontSize: '18px'
     },
-    tagTitle: { 
-        fontWeight:'bold', 
-        paddingRight:'5px', 
-        paddingTop:'6px', 
-        display: 'inline-block' 
+    tagTitle: {
+        fontWeight: 'bold',
+        paddingRight: '5px',
+        paddingTop: '6px',
+        display: 'inline-block'
     },
     styleTextDecoration: {
         textDecoration: 'underline',
-        color:'#CFB53B',
-        cursor:'pointer'
+        color: '#CFB53B',
+        cursor: 'pointer'
+    },
+    loadMoreButtonContainer: {
+        width: 'calc(50% - 17px)',
+        height: '232px',
+        overflow: 'hidden',
+        marginBottom: '35px',
+        border: 'none',
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 }
 

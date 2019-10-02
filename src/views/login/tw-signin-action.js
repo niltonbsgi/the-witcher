@@ -2,7 +2,7 @@ import { axios_fetch } from '../../services/service-request';
 
 export function _Get_User_Access(url) {
     return (
-        axios_fetch('', url)
+        axios_fetch('GET', url)
         .then(
             (resp) => ({
                 type: 'USER_ACCESS',

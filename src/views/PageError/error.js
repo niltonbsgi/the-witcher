@@ -1,5 +1,5 @@
 import React from  'react';
-import Error from  '../../assets/Error.png';
+import Error from  '../../assets/images/Error.png';
 
 class PageError extends React.Component{
     render(){

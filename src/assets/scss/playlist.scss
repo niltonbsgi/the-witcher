@@ -1,0 +1,14 @@
+.playlist {
+  &-container {
+    display: flex;
+  }
+
+  &__content {
+    width: calc(100vw - 454px);
+    background: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) );   
+    padding: 40px;
+    overflow-y: scroll;
+    box-sizing: border-box;
+
+  }
+}
