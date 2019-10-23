@@ -1,8 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect, IndexRedirect } from 'react-router-dom';
-import TwPlayList from '../views/playlist/tw-playlist-list';
-import TwSignInPage from '../views/login/tw-signin-page';
-import TwVideoTrailerDetail from '../views/playlist/tw-video_trailer-detail';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import TwPlaylistListConteiner from '../views/playlist/tw-playlist-list-conteiner';
+import TwSigninConteiner from '../views/login/tw-signin-conteiner';
 import Page404NotFound from '../views/PageError/not-found';
 import PageError from '../views/PageError/error';
 
@@ -10,12 +9,11 @@ function Routes() {
   return (
     <Router>
         <Switch>
-          <Route exact path='/playlist/' component={TwPlayList} />
-          <Route exact path='/video_trailer/' component={TwVideoTrailerDetail} />
-          <Route path='/signin/' component={TwSignInPage} />
+          <Route exact path='/playlist/' component={TwPlaylistListConteiner} />
+          <Route path='/signin/' component={TwSigninConteiner} />
           <Route path='/404/' component={Page404NotFound} />
           <Route path='/500/' component={PageError} />
-          <Route exact path='/' component={TwSignInPage} />
+          <Route exact path='/' component={TwSigninConteiner} />
           <Redirect from='*' to='/404' />
         </Switch>
     </Router>

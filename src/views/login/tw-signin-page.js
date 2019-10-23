@@ -1,26 +1,8 @@
 import React from 'react';
 import LoginForm from '../../components/login-form';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { _Get_User_Access } from './tw-signin-action';
 import { LogIn } from '../../utils/utils';
 
 const URL = 'https://my-json-server.typicode.com/niltonbsgi/my-user-db/sw_data_base?email=@email&password=@password';
-
-function mapStateToProps(state) {
-    const { user, error } = state.SigninReducer;
-    return { user, error };
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        onGetUserAccess: (url) => {
-            const promise = _Get_User_Access(url);
-            dispatch(promise);
-            return promise;
-        }
-    }
-}
 
 class TwSignInPage extends React.Component {
     constructor(props) {
@@ -41,7 +23,6 @@ class TwSignInPage extends React.Component {
         let cURL = URL
             .replace('@email', email)
             .replace('@password', password)
-
         onGetUserAccess(cURL)
             .then(() => {
                 const { user } = this.props
@@ -74,4 +55,4 @@ class TwSignInPage extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TwSignInPage));
+export default TwSignInPage;

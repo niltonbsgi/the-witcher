@@ -1,7 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { _List } from './tw-playlist-action';
 import Card from '../../components/card';
 import logoDark from '../../assets/images/logo-dark.png';
 import Section from '../../components/section';
@@ -17,22 +14,6 @@ const youtubeOptions = {
     width: '640',
     playerVars: { autoplay: 1 }
 };
-
-function mapStateToProps(state) {
-    const { list, error } = state.PlaylistReducer;
-    return { list, error };
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        onGetList: (url_request) => {
-            const promise = _List(url_request);
-            dispatch(promise);
-            return promise;
-        }
-    }
-}
-
 
 class TwPlayList extends React.Component {
 
@@ -238,4 +219,4 @@ const style = {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TwPlayList));
+export default TwPlayList;
