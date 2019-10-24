@@ -43,7 +43,7 @@ class TwSignInPage extends React.Component {
             })
     }
 
-    render() {
+    render() {debugger
         return (
             <LoginForm
                 hiddenMessage={this.state.hiddenMessage}

@@ -3,7 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 module.exports = {
     entry: path.resolve('./src/main/index.js'),
-    devtool: 'source-map',
+    devtool:  (webpack.mode =='development'? 'source-map': 'none'),
     module: {
       rules: [
         {
@@ -37,6 +37,17 @@ module.exports = {
       path: path.resolve(__dirname + '/public'),
       publicPath: '/',
       filename: 'bundle.js'
+    },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          commons: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'chunks',
+            chunks: 'all'
+          }
+        }
+      }
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin()
