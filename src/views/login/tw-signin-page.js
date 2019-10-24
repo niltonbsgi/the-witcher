@@ -2,8 +2,7 @@ import React from 'react';
 import LoginForm from '../../components/login-form';
 import { LogIn } from '../../utils/utils';
 import WithHoc from '../../hoc/with-hoc';
-
-const URL = 'https://my-json-server.typicode.com/niltonbsgi/my-user-db/sw_data_base?email=@email&password=@password';
+import { URL } from '../../services/constants';
 
 class TwSignInPage extends React.Component {
     constructor(props) {
