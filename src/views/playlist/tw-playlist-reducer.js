@@ -8,21 +8,21 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     switch(action.type) {
-        
+
         case 'LIST':
             return {
                 ...state,
                 list: action.payload.data,
                 success: true,
                 errorMessage: '',
-                error: false 
-            }          
+                error: false
+            }
         case 'ERROR':
             return {
                 ...state,
                 success: false,
                 errorMessage: '',
-                error: true 
+                error: true
             }
         default:
             return state

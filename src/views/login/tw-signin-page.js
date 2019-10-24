@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginForm from '../../components/login-form';
 import { LogIn } from '../../utils/utils';
+import WithHoc from '../../hoc/with-hoc';
 
 const URL = 'https://my-json-server.typicode.com/niltonbsgi/my-user-db/sw_data_base?email=@email&password=@password';
 
@@ -55,4 +56,4 @@ class TwSignInPage extends React.Component {
     }
 }
 
-export default TwSignInPage;
+export default WithHoc(TwSignInPage);

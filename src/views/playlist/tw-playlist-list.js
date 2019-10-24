@@ -7,13 +7,65 @@ import Page from 'react-page-loading';
 import Modal from 'react-awesome-modal';
 import YouTube from 'react-youtube';
 import { playlistRequest, playlistRequestNextPage } from '../../services/constants';
+import WithHoc from '../../hoc/with-hoc';
 import '../../assets/scss/playlist.scss';
+import styled from 'styled-components';
 
 const youtubeOptions = {
     height: '390',
     width: '640',
     playerVars: { autoplay: 1 }
 };
+
+const StyleDivList = styled.div`
+    height: 100vh;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+`
+
+const StyleButtonLogOut = styled.button`
+    height: 40px;
+    width: 60%;
+    marginTop: 7%;
+    background: none;
+    color: white;
+    border: none
+`
+
+const StyleButtonTrailer = styled.div`
+    margin-top: 28%;
+    cursor: pointer;
+    background: none;
+    color: #fffdd0;
+    border: 0.02px solid #fffdd0;
+    height: 40px;
+    width: 60%
+`
+
+const LogoNavImg = styled.img`
+    width: 274px;
+    margin: 90px;
+`
+const LoadMoreButtonContainer = styled.div`
+    width: calc(50% - 17px);
+    height: 232px;
+    overflow: hidden;
+    marginBottom: 35px;
+    border: none;
+    position: relative;
+    display: flex;
+    justifyContent: center;
+    alignItems: center;
+`
+const ButtonLoadMore = styled.button`
+    cursor: pointer;
+    background: none;
+    color: #fffdd0;
+    border: 0.02px solid #fffdd0;
+    height: 40px;
+    width: 200px;
+`
 
 class TwPlayList extends React.Component {
 
@@ -43,7 +95,7 @@ class TwPlayList extends React.Component {
                     nextPageToken: this.props.list.nextPageToken
                 })
             })
-            .catch((err) => {
+            .catch(() => {
                 this.props.history.push('/500/')
             })
 
@@ -92,10 +144,9 @@ class TwPlayList extends React.Component {
                             nextPageToken: this.props.list.nextPageToken
                         })
                     })
-                    .catch((err) => {
+                    .catch(() => {
                         this.props.history.push('/500/')
                     })
-
             }
         }
     }
@@ -122,11 +173,11 @@ class TwPlayList extends React.Component {
 
                     <div className="playlist-container">
                         <nav>
-                            <img style={style.logoNav} src={logoDark} />
-                            <button style={style.styleButtonTrailer}>TRAILERS</button>
-                            <button onClick={() => this.handleLogOut()} style={style.styleButtonLogOut}>LOGOUT</button>
+                            <LogoNavImg src={logoDark}/>
+                            <StyleButtonTrailer>TRAILERS</StyleButtonTrailer>
+                            <StyleButtonLogOut onClick={() => this.handleLogOut()}>LOGOUT</StyleButtonLogOut>
                         </nav>
-                        <content className="playlist__content" style={style.styleDivList}>
+                        <StyleDivList className="playlist__content">
                             {this.state.playlist.map((element, i) => {
                                 return (
                                     <Card
@@ -137,15 +188,12 @@ class TwPlayList extends React.Component {
                                     />
                                 )
                             })}
-                            <div style={style.loadMoreButtonContainer}>
-                                <button
-                                    onClick={() => this.handleNextPage()}
-                                    style={style.styleButtonLoadMore}
-                                >
+                            <LoadMoreButtonContainer>
+                                <ButtonLoadMore onClick={() => this.handleNextPage()}>
                                     SHOW MORE
-                                </button>
-                            </div>
-                        </content>
+                                </ButtonLoadMore>
+                            </LoadMoreButtonContainer>
+                        </StyleDivList>
                     </div>
                 </Page>
             </Section>
@@ -153,70 +201,4 @@ class TwPlayList extends React.Component {
     }
 }
 
-const style = {
-    styleDivList: {
-        height: '100vh',
-        display: 'flex',
-        flexFlow: 'row wrap',
-        justifyContent: 'space-between'
-    },
-    styleButtonLogOut: {
-        height: '40px',
-        width: '60%',
-        marginTop: '7%',
-        background: 'none',
-        color: 'white',
-        border: 'none'
-    },
-    styleButtonTrailer: {
-        marginTop: '28%',
-        cursor: 'pointer',
-        background: 'none',
-        color: '#fffdd0',
-        border: '0.02px solid #fffdd0',
-        height: '40px',
-        width: '60%'
-    },
-    styleButtonLoadMore: {
-        cursor: 'pointer',
-        background: 'none',
-        color: '#fffdd0',
-        border: '0.02px solid #fffdd0',
-        height: '40px',
-        width: '200px'
-    },
-    logoNav: {
-        width: '274px',
-        margin: '90px'
-    },
-    tagStyle: {
-        borderBottom: 'solid 0.05em',
-        width: '95%',
-        fontWeight: 'bold',
-        fontSize: '18px'
-    },
-    tagTitle: {
-        fontWeight: 'bold',
-        paddingRight: '5px',
-        paddingTop: '6px',
-        display: 'inline-block'
-    },
-    styleTextDecoration: {
-        textDecoration: 'underline',
-        color: '#CFB53B',
-        cursor: 'pointer'
-    },
-    loadMoreButtonContainer: {
-        width: 'calc(50% - 17px)',
-        height: '232px',
-        overflow: 'hidden',
-        marginBottom: '35px',
-        border: 'none',
-        position: 'relative',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
-}
-
-export default TwPlayList;
+export default WithHoc(TwPlayList);

@@ -1,14 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Z_BLOCK } from 'zlib';
+import styled from 'styled-components';
+import WithHoc from '../hoc/with-hoc';
 
+const StyleDivLabel = styled.label`
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 200;
+    text-align: center;
+    padding: 10px;
+    display: block;
+`
+
+const StylefigCaption = styled.div`
+    width: '100%',
+    position: 'absolute',
+    bottom: '0',
+    background-color: 'rgba(0,0,0,.6)',
+`
+
+const WrappedCard = styled.div`
+    width: calc(50% - 17px);
+    height: 232px;
+    overflow: hidden;
+    margin-bottom: 35px;
+    border: solid 1px;
+    border-color: #f5e59a;
+    position: relative;
+    background-size: 190%;
+    background-position: center center;
+    cursor: pointer;
+`
 const Card = ({ title, url, onClick }) => {
     return (
-        <div onClick={() => onClick()} style={{...style.styleDiv, ...{ backgroundImage: `url(${url})` }}}>
-            <div style={style.stylefigcaption}>
-                <label style={style.styleDivLabel} >{title}</label>
-            </div>
-        </div>
+        <WrappedCard  style={ { backgroundImage: `url(${url})` } } onClick={() => onClick()}>
+            <StylefigCaption>
+                <StyleDivLabel>{title}</StyleDivLabel>
+            </StylefigCaption>
+        </WrappedCard>
     )
 }
 
@@ -22,39 +52,4 @@ Card.defaultProps = {
     onClick: () => { }
 };
 
-const style = {
-    styleDiv: {
-        width: 'calc(50% - 17px)',
-        height: '232px',
-        overflow: 'hidden',
-        marginBottom: '35px',
-        border: 'solid 1px',
-        borderColor: '#f5e59a',
-        position: 'relative',
-        backgroundSize: '190%',
-        backgroundPosition: 'center center',
-        cursor: 'pointer',
-    },
-    styleDivLabel: {
-        color: 'white',
-        textAlign: 'center',
-        fontSize: '14px',
-        fontWeight: '200',
-        textAlign: 'center',
-        padding: '10px',
-        display: 'block',
-    },
-    stylefigcaption: {
-        width: '100%',
-        position: 'absolute',
-        bottom: '0',
-        backgroundColor: 'rgba(0,0,0,.6)',
-    },
-    styleImage: {
-        cursor: 'pointer',
-        width: '100%',
-        float: 'left'
-    }
-}
-
-export default Card;
+export default WithHoc(Card);

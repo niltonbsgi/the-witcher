@@ -24,10 +24,10 @@ module.exports = {
             }
           }]
         },
-        { 
+        {
           test: /\.(eot|svg|ttf|woff2?|otf)$/,
           use: 'file-loader'
-        }  
+        }
       ]
     },
     resolve: {
