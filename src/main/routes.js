@@ -10,7 +10,7 @@ function Routes() {
   return (
     <Router>
         <Switch>
-          <Suspense fallback={<div>Loading…</div>}>
+          <Suspense fallback={<div><h3>Loading…</h3></div>}>
             <Route exact path='/playlist/' component={TwPlaylistListConteiner} />
             <Route path='/signin/' component={TwSigninConteiner} />
             <Route path='/404/' component={Page404NotFound} />
